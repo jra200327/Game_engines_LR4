@@ -1,0 +1,32 @@
+Textures:
+  TexRun ../../Assets/Animations/MegaRun.png
+  TexIdle ../../Assets/Animations/MegaIdle.png
+  TexJump ../../Assets/Animations/MegaJump.png
+  TexShootIdle ../../Assets/Animations/MegaShootIdle.png
+  TexShootRun ../../Assets/Animations/MegaShootRun.png
+  TexShootJump ../../Assets/Animations/MegaShootJump.png
+  TexExplosion ../../Assets/Animations/explosion.png
+  Tile ../../Assets/Textures/tile.png
+  Tile1 ../../Assets/Textures/tile1.png
+  Brick_Tile ../../Assets/Textures/brick_tile.png
+  Question_Tile ../../Assets/Textures/question_tile.png
+  Question_Inactive_Tile ../../Assets/Textures/question_inactive_tile.png
+  Pipe_Up_R ../../Assets/Textures/pipeUpR.png
+  Pipe_L ../../Assets/Textures/pipeL.png
+  Pipe_R ../../Assets/Textures/pipeR.png
+  Pipe_Up_L ../../Assets/Textures/pipeUpL.png
+  Finish ../../Assets/Textures/finish.png
+  BigHill ../../Assets/Textures/hillBig.png
+  SmallHill ../../Assets/Textures/hillSmall.png
+  Bullet ../../Assets/Textures/Bullet.png
+  Finish ../../Assets/Textures/finish.png
+Animations:
+  RunAnim TexRun 3 5
+  IdleAnim TexIdle 3 20
+  JumpAnim TexJump 1 60
+  ShootRunAnim TexShootRun 3 5
+  ShootIdleAnim TexShootIdle 1 20
+  ShootJumpAnim TexShootJump 1 60
+  ExplosionAnim TexExplosion 12 5
+Fonts:
+  futura ../../Assets/Fonts/futura.ttf

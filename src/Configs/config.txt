@@ -1,0 +1,24 @@
+# ===== НАСТРОЙКИ ОКНА =====
+Window 1280 768
+
+# ===== ИГРОК =====
+# bboxW bboxH speedX jumpSpeed maxSpeed gravity baseAnim animations...
+Player 30 30 5.0 15.0 20.0 1.0 IdleAnim IdleAnim RunAnim JumpAnim
+
+# ===== ПУЛЯ =====
+# texture speed circleRadius
+Bullet Bullet 10.0 5.0
+
+# ===== ДЕКОРАЦИИ =====
+# name baseTexture [animations...]
+Decoration BigHill BigHill
+Decoration Pipe1 Pipe_Up_R
+Decoration Pipe2 Pipe_L
+
+# ===== ТАЙЛЫ =====
+# baseTexture
+Tile Tile
+
+# ===== КИРПИЧИ =====
+# baseTexture destroyAnimation
+Brick Brick_Tile BrickExplosion

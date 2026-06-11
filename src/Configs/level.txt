@@ -1,0 +1,18 @@
+# ===== ОБЪЕКТЫ УРОВНЯ =====
+# name x y
+BigHill 5 9
+Player 1 10
+Tile 0 11
+Tile 1 11
+Tile 2 11
+Tile 3 11
+Tile 4 11
+Tile 5 11
+Tile 6 11
+Tile 7 11
+Brick_Tile 1 8
+Brick_Tile 2 8
+Brick_Tile 3 8
+Pipe_L 8 10
+Pipe_R 9 10
+Finish 10 11
