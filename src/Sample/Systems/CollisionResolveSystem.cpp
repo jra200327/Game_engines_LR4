@@ -28,18 +28,20 @@ void CollisionResolveSystem::OnUpdate()
             bool isBullet1 = _bulletComponents.Has(ent);
             bool isWorld1 = _objectComponents.Has(ent);
             bool isFinish1 = _finishComponents.Has(ent);
+            bool isEnemy1 = _enemyComponents.Has(ent);
 
             bool isPlayer2 = _shooterComponents.Has(other);
             bool isBullet2 = _bulletComponents.Has(other);
             bool isWorld2  = _objectComponents.Has(other);
             bool isFinish2 = _finishComponents.Has(other);
+            bool isEnemy2 = _enemyComponents.Has(other);
 
             if ((isPlayer1 && isBullet2) || (isBullet1 && isPlayer2))
                 continue;
 
             if ((isWorld1 && isBullet2) || (isBullet1 && isWorld2))
             {
-                int bullet   = isBullet1 ? ent   : other;
+                int bullet  = isBullet1 ? ent  : other;
                 int world = isWorld1 ? ent : other;
 
                 toDestroy.push_back(bullet);
@@ -55,6 +57,18 @@ void CollisionResolveSystem::OnUpdate()
 
             }
 
+            if ((isEnemy1 && isBullet2) || (isBullet1 && isEnemy2))
+            {
+                int bullet = isBullet1 ? ent : other;
+                int enemy = isEnemy1 ? ent : other;
+
+                toDestroy.push_back(bullet);
+                toDestroy.push_back(enemy);
+
+                auto& pos = _positionComponents.Get(enemy);
+                _factory.CreateEntity(AssetNames::ExplosionAnim, {pos.X, pos.Y});
+            }
+
             if ((isPlayer1 && isFinish2) || (isFinish1 && isPlayer2))
             {
                 int player   = isPlayer1 ? ent   : other;
@@ -64,7 +78,26 @@ void CollisionResolveSystem::OnUpdate()
 
             }
 
-            if (!isPlayer1 || !isWorld2)
+            if (isPlayer1 && isEnemy2)
+            {
+                int player = ent;
+                int enemy = other;
+
+                if (side == CollisionSide::Top)
+                {
+                    toDestroy.push_back(enemy);
+                    auto& pos = _positionComponents.Get(enemy);
+                    _factory.CreateEntity(AssetNames::ExplosionAnim, {pos.X, pos.Y});
+                }
+                else
+                {
+                    _engine.LoadScene<MenuScene>();
+                }
+            }
+
+            bool isCharacter1 = isPlayer1 || isEnemy1;
+
+            if (!isCharacter1 || !isWorld2)
                 continue;
 
             auto& pos = _positionComponents.Get(ent);

@@ -12,7 +12,6 @@ set(SOURCES main.cpp
         Sample/Components/SpriteComponent.h
         Sample/Components/ShooterComponent.h
         Sample/Components/BulletComponent.h
-        Sample/Components/AsteroidComponent.h
         Sample/Components/GravityComponent.h
         Sample/Components/CameraComponent.h
         Sample/Components/DefaultCameraTag.h
@@ -21,6 +20,7 @@ set(SOURCES main.cpp
         Sample/Components/AnimationComponent.h
         Sample/Components/JumpComponent.h
         Sample/Components/ObjectComponent.h
+        Sample/Components/EnemyComponent.h
         Sample/Components/FinishTag.h
         Sample/Systems/InputSystem.cpp
         Sample/Systems/InputSystem.h
@@ -34,8 +34,6 @@ set(SOURCES main.cpp
         Sample/Systems/ShootingSystem.h
         Sample/Systems/EntityFactory.cpp
         Sample/Systems/EntityFactory.h
-        Sample/Systems/BoundariesSystem.cpp
-        Sample/Systems/BoundariesSystem.h
         Sample/Systems/DefaultCameraSystem.h
         Sample/Systems/DefaultCameraSystem.cpp
         Sample/Systems/FollowXCameraSystem.h

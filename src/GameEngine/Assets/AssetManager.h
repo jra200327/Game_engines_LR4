@@ -13,6 +13,7 @@
 // Глобальные константы для имён ассетов
 namespace AssetNames {
     // Текстуры
+    inline const std::string TexGoombaMove = "TexGoombaMove";
     inline const std::string TexRun = "TexRun";
     inline const std::string TexIdle = "TexIdle";
     inline const std::string TexJump = "TexJump";
@@ -32,6 +33,7 @@ namespace AssetNames {
     inline const std::string Finish = "Finish";
     inline const std::string BigHill = "BigHill";
     inline const std::string Bullet = "Bullet";
+    inline const std::string Goomba = "Goomba";
     
     // Анимации
     inline const std::string RunAnim = "RunAnim";
@@ -41,6 +43,7 @@ namespace AssetNames {
     inline const std::string ShootIdleAnim = "ShootIdleAnim";
     inline const std::string ShootJumpAnim = "ShootJumpAnim";
     inline const std::string ExplosionAnim = "ExplosionAnim";
+    inline const std::string GoombaMoveAnim = "GoombaMoveAnim";
     
     // Шрифты
     inline const std::string BaseFont = "futura";

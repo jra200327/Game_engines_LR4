@@ -16,3 +16,4 @@ Brick_Tile 3 8
 Pipe_L 8 10
 Pipe_R 9 10
 Finish 10 11
+Goomba 2 7

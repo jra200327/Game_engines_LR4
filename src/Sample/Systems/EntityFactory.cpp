@@ -8,7 +8,6 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/ShooterComponent.h"
 #include "../Components/BulletComponent.h"
-#include "../Components/AsteroidComponent.h"
 #include "../Components/GravityComponent.h"
 #include "../Components/CameraComponent.h"
 #include "../Components/DefaultCameraTag.h"
@@ -16,6 +15,7 @@
 #include "../Components/AnimationComponent.h"
 #include "../Components/JumpComponent.h"
 #include "../Components/ObjectComponent.h"
+#include "../Components/EnemyComponent.h"
 #include "../Components/ExplosionTag.h"
 #include "../Components/FinishTag.h"
 #include "../../Ecs/Filter/Filter.h"
@@ -304,6 +304,37 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         anims.Animations.emplace(AssetNames::ExplosionAnim, explosionAnim);
 
         anims.CurrentAnimation = AssetNames::ExplosionAnim;
+
+        a.Add(e, anims);
+
+    }
+    else if(name == AssetNames::Goomba)
+    {
+        int e = _world.CreateEntity();
+        auto& p = _world.GetStorage<PositionComponent>();
+        auto& s = _world.GetStorage<SpriteComponent>();
+        auto& a = _world.GetStorage<AnimationComponent>();
+        auto& boxColliderStorage = _world.GetStorage<BoxColliderComponent>();
+        auto& enemyStorage = _world.GetStorage<EnemyComponent>();
+        auto& movementStorage = _world.GetStorage<MovementComponent>();
+        auto& gravityStorage = _world.GetStorage<GravityComponent>();
+        auto& collisionStorage = _world.GetStorage<CollisionComponent>();
+
+        p.Add(e, PositionComponent(pos.x, pos.y));
+        s.Add(e, SpriteComponent({19, 24}, {0, 0}, _assets.GetTexture(AssetNames::TexGoombaMove), 0.f, 2.f));
+        boxColliderStorage.Add(e, BoxColliderComponent(38, 48));
+        collisionStorage.Add(e, CollisionComponent());
+        enemyStorage.Add(e, EnemyComponent());
+        movementStorage.Add(e, MovementComponent(10, sf::Vector2f(0, 0)));
+        gravityStorage.Add(e, GravityComponent());
+
+        AnimationComponent anims;
+
+        Animation goombaRunAnim = _assets.GetAnimation(AssetNames::GoombaMoveAnim);
+
+        anims.Animations.emplace(AssetNames::GoombaMoveAnim, goombaRunAnim);
+
+        anims.CurrentAnimation = AssetNames::GoombaMoveAnim;
 
         a.Add(e, anims);
 

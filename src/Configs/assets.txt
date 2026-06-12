@@ -1,4 +1,5 @@
 Textures:
+  TexGoombaMove ../../Assets/Animations/GoombaMove.png
   TexRun ../../Assets/Animations/MegaRun.png
   TexIdle ../../Assets/Animations/MegaIdle.png
   TexJump ../../Assets/Animations/MegaJump.png
@@ -28,5 +29,6 @@ Animations:
   ShootIdleAnim TexShootIdle 1 20
   ShootJumpAnim TexShootJump 1 60
   ExplosionAnim TexExplosion 12 5
+  GoombaMoveAnim TexGoombaMove 3 5
 Fonts:
   futura ../../Assets/Fonts/futura.ttf
