@@ -46,6 +46,8 @@ set(SOURCES main.cpp
         Sample/Systems/PlayerRespawnSystem.cpp
         Sample/Systems/CleanerSystem.cpp
         Sample/Systems/CleanerSystem.h
+        Sample/Systems/EnemyAISystem.h
+        Sample/Systems/EnemyAISystem.cpp
         Sample/Components/MoveInputEvent.h
         Sample/Components/ShootEvent.h
         GameEngine/GameEngine.h

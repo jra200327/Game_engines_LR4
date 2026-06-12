@@ -14,6 +14,7 @@
 #include "../../Sample/Systems/ShootingSystem.h"
 #include "../../Sample/Systems/PlayerRespawnSystem.h"
 #include "../../Sample/Systems/CleanerSystem.h"
+#include "../../Sample/Systems/EnemyAISystem.h"
 
 void GameScene::Init()
 {
@@ -39,10 +40,12 @@ void GameScene::Init()
     systemsManager.AddSystem(std::make_shared<PlayerAnimationSystem>(world));
     systemsManager.AddSystem(std::make_shared<AnimationSystem>(world));
     systemsManager.AddSystem(std::make_shared<MovementSystem>(world, _actions));
+    systemsManager.AddSystem(std::make_shared<EnemyAISystem>(world, _grid)); 
     systemsManager.AddSystem(std::make_shared<ShootingSystem>(world, *entityFactory, _actions["shoot"]));
     systemsManager.AddSystem(std::make_shared<CollisionSystem>(world));
     systemsManager.AddSystem(std::make_shared<CollisionResolveSystem>(world, *entityFactory, gameEngine));
     systemsManager.AddSystem(std::make_shared<CleanerSystem>(world));
+    
     
     _render->OnInit();
     systemsManager.Initialize();
