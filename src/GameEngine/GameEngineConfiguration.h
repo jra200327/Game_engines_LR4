@@ -46,6 +46,11 @@ struct LevelObject {
     int y = 0;
 };
 
+struct PatrolPair {
+    sf::Vector2i a;
+    sf::Vector2i b;
+};
+
 class GameEngineConfiguration {
 public:
     // Параметры окна
@@ -56,6 +61,7 @@ public:
     std::string assetsFile = "assets.txt";
     std::string levelFile = "level.txt";
     std::string configFile = "config.txt";
+    std::string patrolFile = "enemyPatrol.txt";
     
     // Конфигурации объектов
     PlayerConfig player;
@@ -66,6 +72,7 @@ public:
     
     // Объекты уровня
     std::vector<LevelObject> levelObjects;
+    std::vector<PatrolPair> patrols;
     
     // Загрузка основной конфигурации
     bool LoadFromFile(const std::string& path) {
@@ -178,6 +185,46 @@ public:
         std::cout << "[Level] Loaded " << levelObjects.size() << " objects\n";
         return true;
     }
+
+    bool LoadPatrols(const std::string& path)
+    {
+    std::ifstream file(path);
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open patrol file: " << path << "\n";
+        return false;
+    }
+
+    patrols.clear();
+
+    std::string line;
+    size_t lineNumber = 0;
+
+    while (std::getline(file, line))
+    {
+        ++lineNumber;
+
+        if (line.empty() || line[0] == '#')
+            continue;
+
+        std::istringstream iss(line);
+
+        PatrolPair p;
+
+        if (iss >> p.a.x >> p.a.y >> p.b.x >> p.b.y)
+        {
+            patrols.push_back(p);
+        }
+        else
+        {
+            std::cerr << "Warning: invalid patrol at line "
+                      << lineNumber << "\n";
+        }
+    }
+
+    std::cout << "[Patrol] Loaded " << patrols.size() << " patrol pairs\n";
+    return true;
+    }
     
     // Полная загрузка всей конфигурации игры
     bool LoadAll() {
@@ -193,6 +240,12 @@ public:
             return false;
         }
         
+        if (!LoadPatrols(patrolFile))
+        {
+            std::cerr << "Failed to load patrols\n";
+            return false;
+        }
+
         std::cout << "=== Configuration loaded successfully ===\n\n";
         return true;
     }

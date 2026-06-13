@@ -22,7 +22,7 @@
 #include "../../Ecs/Filter/FilterBuilder.h"
 #include <random>
 
-void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
+int EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 {
     if (name == "Player")
     {
@@ -68,6 +68,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         animationStorage.Add(player1, anims);
 
+        return player1;
+
     }
     else if(name == "Bullet")
     {
@@ -102,6 +104,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(bullet, CollisionComponent());
         bulletStorage.Add(bullet, BulletComponent());
         spriteStorage.Add(bullet, SpriteComponent({8, 8}, {0, 0}, _assets.GetTexture(AssetNames::Bullet), 0.f, 2.f));
+
+        return bullet;
     }
      else if (name == AssetNames::Tile)
     {
@@ -117,6 +121,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Tile1)
     {
@@ -132,6 +138,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Brick_Tile)
     {
@@ -147,6 +155,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(true));
+
+        return e;
     }
     else if (name == AssetNames::Question_Tile)
     {
@@ -162,6 +172,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Question_Inactive_Tile)
     {
@@ -177,6 +189,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Pipe_Up_L)
     {
@@ -193,6 +207,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Pipe_Up_R)
     {
@@ -208,6 +224,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Pipe_L)
     {
@@ -223,6 +241,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::Pipe_R)
     {
@@ -238,6 +258,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 64));
         objectStorage.Add(e, ObjectComponent(false));
+
+        return e;
     }
     else if (name == AssetNames::BigHill)
     {
@@ -247,6 +269,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         p.Add(e, PositionComponent(pos.x, pos.y));
         s.Add(e, SpriteComponent({320, 192}, {0, 0}, _assets.GetTexture(AssetNames::BigHill), 0.f, 1.f));
+
+        return e;
     }
     else if (name == AssetNames::Finish)
     {
@@ -264,6 +288,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         boxColliderStorage.Add(e, BoxColliderComponent(64, 512));
         objectStorage.Add(e, ObjectComponent(false));
         fin.Add(e, FinishTag());
+
+        return e;
     }
     else if (name == "DefautlCamera")
     {
@@ -273,6 +299,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         cam.Add(e, CameraComponent(sf::View(sf::FloatRect({0.f, 0.f}, {pos.x, pos.y}))));
         tag.Add(e, DefaultCameraTag());
+
+        return e;
     }
     else if (name == "FollowXCamera")
     {
@@ -282,6 +310,8 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         cam.Add(e, CameraComponent(sf::View(sf::FloatRect({0.f, 0.f}, {pos.x, pos.y}))));
         tag.Add(e, FollowXCameraTag());
+
+        return e;
     }
     else if (name == AssetNames::ExplosionAnim)
     {
@@ -307,6 +337,7 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         a.Add(e, anims);
 
+        return e;
     }
     else if(name == AssetNames::Goomba)
     {
@@ -340,5 +371,6 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
 
         a.Add(e, anims);
 
+        return e;
     }
 }

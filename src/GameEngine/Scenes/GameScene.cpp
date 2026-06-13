@@ -87,16 +87,21 @@ void GameScene::Render()
 
 void GameScene::LoadLevel()
 {
+    std::vector<int> enemyEntities;
     const auto& levelObjects = gameEngine.Level();
 
     for (const auto& obj : levelObjects)
     {
         sf::Vector2f worldPos = _grid.GridToWorld(sf::Vector2i(obj.x, obj.y));
-        entityFactory->CreateEntity(obj.name, worldPos);
+        int entity = entityFactory->CreateEntity(obj.name, worldPos);
         if(obj.name == "Player")
         {
             starterPos = _grid.GridToWorld({obj.x, obj.y});
             std::cout<<starterPos.y<<std::endl;
+        }
+        if(obj.name == "Goomba")
+        {
+            enemyEntities.push_back(entity);
         }
     }
 
@@ -105,6 +110,28 @@ void GameScene::LoadLevel()
     sf::Vector2u size = gameEngine.Window().getSize();
     sf::Vector2f sizeF(static_cast<float>(size.x), static_cast<float>(size.y));
     systemsManager.AddSystem(std::make_shared<PlayerRespawnSystem>(world, starterPos, sizeF.y));
+
+     const auto& patrols = gameEngine.Patrols();
+
+    if (patrols.size() < enemyEntities.size())
+    {
+        std::cerr << "[ERROR] Not enough patrols for enemies!\n";
+    }
+
+    int count = std::min(enemyEntities.size(), patrols.size());
+
+    for (int i = 0; i < count; i++)
+    {
+        auto& enemy = _enemyComponents.Get(enemyEntities[i]);
+
+        enemy.patrolA = patrols[i].a;
+        enemy.patrolB = patrols[i].b;
+
+        enemy.currentPatrolTarget = enemy.patrolB;
+        enemy.isInitiated = true;
+    }
+
+    
 }
 
 void GameScene::RenderSFML()

@@ -69,6 +69,7 @@ public:
     const AssetManager& Assets() const { return _assetManager; }
     sf::RenderWindow& Window() { return _window; }
     const std::vector<LevelObject>& Level() const { return _config.levelObjects; }
+    const std::vector<PatrolPair>& Patrols() const { return _config.patrols; }
 
 
     template <typename T>

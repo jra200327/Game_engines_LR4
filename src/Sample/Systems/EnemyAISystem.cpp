@@ -210,6 +210,11 @@ void EnemyAISystem::OnUpdate()
         auto& enemy = _enemyComponents.Get(ent);
         auto& pos = _positionComponents.Get(ent);
         auto& movement = _movementComponents.Get(ent);
+        auto& jump = _jumpComponents.Get(ent);
+        auto& grav = _gravityComponents.Get(ent);
+
+        if (!enemy.isInitiated)
+            continue;
 
         sf::Vector2f enemyPos = {pos.X, pos.Y};
 
@@ -227,21 +232,27 @@ void EnemyAISystem::OnUpdate()
         {
             enemy.state = EnemyState::Patrol;
 
-            if (enemy.path.empty())
-                enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, false);
-
+            enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, true);
             if (enemyCell == enemy.currentPatrolTarget)
             {
                 enemy.currentPatrolTarget =
                     (enemy.currentPatrolTarget == enemy.patrolA)
                     ? enemy.patrolB
                     : enemy.patrolA;
+                
+                enemy.path.clear();
             }
 
             Move(enemyPos, movement, enemy, dt);
+            if (!enemy.path.empty())
+                {
+                    sf::Vector2i nextCell = enemy.path.front();
 
-            pos.X = enemyPos.x;
-            pos.Y = enemyPos.y;
+                    if (nextCell.y < enemyCell.y && grav.grounded)
+                    {
+                        jump.jumpRequested = true;
+                    }
+                }
         }
         else
         {
@@ -263,9 +274,6 @@ void EnemyAISystem::OnUpdate()
             // ---------------- JUMP FLAG ----------------
             if (_jumpComponents.Has(ent) && _gravityComponents.Has(ent))
             {
-                auto& jump = _jumpComponents.Get(ent);
-                auto& grav = _gravityComponents.Get(ent);
-
                 if (!enemy.path.empty())
                 {
                     sf::Vector2i nextCell = enemy.path.front();
@@ -277,16 +285,6 @@ void EnemyAISystem::OnUpdate()
                 }
             }
         }
-
-        // ---------------- PLAYER COLLISION ----------------
-        if (enemyCell == playerCell)
-        {
-            for (auto p : _player)
-            {
-                auto& pp = _positionComponents.Get(p);
-                pp.X = 64.f;
-                pp.Y = 64.f;
-            }
-        }
+        
     }
 }

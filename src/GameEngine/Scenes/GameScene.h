@@ -15,6 +15,7 @@
 #include "../../Sample/Components/ShooterComponent.h"
 #include "../../Sample/Components/CameraComponent.h"
 #include "../../Sample/Components/FollowXCameraTag.h"
+#include "../../Sample/Components/EnemyComponent.h"
 
 #include "../../Sample/Systems/RenderSystem.h"
 
@@ -32,27 +33,35 @@ class GameScene : public Scene
 
     Filter _cameras;
     Filter _players;
+    Filter _enemies;
 
     sf::Vector2f starterPos;
 
     ComponentStorage<CameraComponent>& _cameraComponents;
     ComponentStorage<PositionComponent>& _positionComponents;
 
+    ComponentStorage<EnemyComponent>& _enemyComponents;
+
 public:
     GameScene(GameEngine& engine) : Scene(engine), _grid(64.f), _colliderDebug(world),
-      _cameraComponents(world.GetStorage<CameraComponent>()),
-      _positionComponents(world.GetStorage<PositionComponent>()),
-      _cameras(
+        _cameraComponents(world.GetStorage<CameraComponent>()),
+        _positionComponents(world.GetStorage<PositionComponent>()),
+        _enemyComponents(world.GetStorage<EnemyComponent>()),
+        _cameras(
           FilterBuilder(world)
               .With<CameraComponent>()
               .With<FollowXCameraTag>()
               .Build()),
 
-      _players(
+        _players(
           FilterBuilder(world)
               .With<PositionComponent>()
               .With<ShooterComponent>()
-              .Build())
+              .Build()),
+        _enemies(
+            FilterBuilder(world)
+            .With<EnemyComponent>()
+            .Build())
     {}
 
     void Init() override;

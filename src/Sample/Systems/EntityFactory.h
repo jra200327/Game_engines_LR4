@@ -18,7 +18,7 @@ public:
     {
     }
 
-    void CreateEntity(std::string name, sf::Vector2f pos);
+    int CreateEntity(std::string name, sf::Vector2f pos);
 };
 
 #endif //ENTITYFACTORY_H
