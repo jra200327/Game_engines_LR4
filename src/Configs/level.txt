@@ -15,5 +15,12 @@ Brick_Tile 2 8
 Brick_Tile 3 8
 Pipe_L 8 10
 Pipe_R 9 10
-Finish 10 11
-Goomba 2 7
+Tile 10 11
+Tile 11 11
+Tile 12 11
+Tile 13 11
+Tile 14 11
+Tile 15 11
+Tile 16 11
+Tile 17 11
+Goomba 14 10

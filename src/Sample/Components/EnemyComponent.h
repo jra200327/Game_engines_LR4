@@ -21,6 +21,11 @@ struct EnemyComponent
     std::vector<sf::Vector2i> path;
 
     float repathTimer = 0.f;
+
+    float sightRadius = 640;
+    bool seesPlayer = false;
+
+    bool isInitiated = false;
 };
 
 #endif //ENEMYCOMPONENT_H

@@ -11,6 +11,9 @@
 #include "../Components/GravityComponent.h"
 #include "../Components/ShooterComponent.h"
 #include "../Components/MovementComponent.h"
+#include "../Components/JumpComponent.h"
+#include "../Components/GravityComponent.h"
+
 
 #include "../../GameEngine/GameEngine.h"
 #include "EntityFactory.h"
@@ -24,6 +27,8 @@ class EnemyAISystem final : public ISystem
     ComponentStorage<GravityComponent>& _gravityComponents;
     ComponentStorage<ShooterComponent>& _shooterComponents;
     ComponentStorage<MovementComponent>& _movementComponents;
+    ComponentStorage<JumpComponent>& _jumpComponents;
+    ComponentStorage<GravityComponent>& _graviteComponents;
 
     Filter _enemies;
     Filter _objects;
@@ -32,9 +37,15 @@ class EnemyAISystem final : public ISystem
 
     bool IsBlocked(sf::Vector2i cell);
 
-    std::vector<sf::Vector2i> FindPath(sf::Vector2i start, sf::Vector2i goal);
+    std::vector<sf::Vector2i> FindPath(sf::Vector2i start, sf::Vector2i goal, bool allowJump);
 
     void Move(sf::Vector2f& pos, EnemyComponent& enemy, float dt);
+
+    sf::Vector2i FindEdge(sf::Vector2i start, sf::Vector2i dir);
+
+    bool HasLineOfSight(sf::Vector2i a, sf::Vector2i b);
+
+    void Move(sf::Vector2f& pos, MovementComponent& movement, EnemyComponent& enemy, float dt);
 
 public:
     EnemyAISystem(World& world,
@@ -47,6 +58,8 @@ public:
          _gravityComponents(world.GetStorage<GravityComponent>()),
          _shooterComponents(world.GetStorage<ShooterComponent>()),
          _movementComponents(world.GetStorage<MovementComponent>()),
+         _jumpComponents(world.GetStorage<JumpComponent>()),
+         _graviteComponents(world.GetStorage<GravityComponent>()),
 
          _enemies(FilterBuilder(world)
             .With<EnemyComponent>()

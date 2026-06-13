@@ -319,14 +319,16 @@ void EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         auto& movementStorage = _world.GetStorage<MovementComponent>();
         auto& gravityStorage = _world.GetStorage<GravityComponent>();
         auto& collisionStorage = _world.GetStorage<CollisionComponent>();
+        auto& jumpStorage = _world.GetStorage<JumpComponent>();
 
         p.Add(e, PositionComponent(pos.x, pos.y));
         s.Add(e, SpriteComponent({19, 24}, {0, 0}, _assets.GetTexture(AssetNames::TexGoombaMove), 0.f, 2.f));
         boxColliderStorage.Add(e, BoxColliderComponent(38, 48));
         collisionStorage.Add(e, CollisionComponent());
         enemyStorage.Add(e, EnemyComponent());
-        movementStorage.Add(e, MovementComponent(10, sf::Vector2f(0, 0)));
+        movementStorage.Add(e, MovementComponent(5, sf::Vector2f(0, 0)));
         gravityStorage.Add(e, GravityComponent());
+        jumpStorage.Add(e, JumpComponent(15));
 
         AnimationComponent anims;
 
