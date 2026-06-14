@@ -231,28 +231,31 @@ void EnemyAISystem::OnUpdate()
         if (!enemy.seesPlayer)
         {
             enemy.state = EnemyState::Patrol;
-
-            enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, true);
-            if (enemyCell == enemy.currentPatrolTarget)
+            
+            // Получаем мировые координаты цели
+            sf::Vector2f targetWorldPos = _grid.GridToWorld(enemy.currentPatrolTarget);
+            
+            // Проверяем достижение цели по расстоянию (допуск 10 пикселей)
+            float distToTarget = Distance(enemyPos, targetWorldPos);
+            
+            if (distToTarget < 40.f) // Достиг цели
             {
-                enemy.currentPatrolTarget =
-                    (enemy.currentPatrolTarget == enemy.patrolA)
-                    ? enemy.patrolB
+                // Меняем цель на другую точку патрулирования
+                enemy.currentPatrolTarget = 
+                    (enemy.currentPatrolTarget == enemy.patrolA) 
+                    ? enemy.patrolB 
                     : enemy.patrolA;
                 
                 enemy.path.clear();
+                
+                // В этом кадре не двигаемся
+                movement.Direction = {0.f, 0.f};
+                continue;
             }
 
+            enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, true);
+            
             Move(enemyPos, movement, enemy, dt);
-            if (!enemy.path.empty())
-                {
-                    sf::Vector2i nextCell = enemy.path.front();
-
-                    if (nextCell.y < enemyCell.y && grav.grounded)
-                    {
-                        jump.jumpRequested = true;
-                    }
-                }
         }
         else
         {
@@ -267,10 +270,7 @@ void EnemyAISystem::OnUpdate()
             }
 
             Move(enemyPos, movement, enemy, dt);
-
-            pos.X = enemyPos.x;
-            pos.Y = enemyPos.y;
-
+            
             // ---------------- JUMP FLAG ----------------
             if (_jumpComponents.Has(ent) && _gravityComponents.Has(ent))
             {

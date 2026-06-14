@@ -15,8 +15,6 @@
 #endif
 
 class GameEngine {
-    GameEngineConfiguration _config;
-
     sf::RenderWindow _window;
     sf::Clock _deltaClock;
 
@@ -67,6 +65,8 @@ class GameEngine {
     void Render(float delta);
 
 public:
+    GameEngineConfiguration _config;
+
     GameEngine(const GameEngineConfiguration& config);
 
     std::shared_ptr<Scene> CurrentScene() { return _scenes[_currentScene]; }

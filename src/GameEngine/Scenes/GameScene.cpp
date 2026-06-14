@@ -87,6 +87,9 @@ void GameScene::Render()
 
 void GameScene::LoadLevel()
 {
+    gameEngine._config.LoadLevel("../../Configs/level.txt");
+    gameEngine._config.LoadPatrols("../../Configs/enemyPatrol.txt");
+
     std::vector<int> enemyEntities;
     const auto& levelObjects = gameEngine.Level();
 

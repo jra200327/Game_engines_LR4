@@ -28,8 +28,6 @@ GameEngine::GameEngine(const GameEngineConfiguration& config) : _config(config)
 void GameEngine::Initialize()
 {
     _assetManager.LoadFromFile("../../Configs/assets.txt");
-    _config.LoadLevel("../../Configs/level.txt");
-    _config.LoadPatrols("../../Configs/enemyPatrol.txt");
     LoadScene<MenuScene>();
 }
 

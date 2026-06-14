@@ -1,4 +1,6 @@
 Textures:
+  Player ../../Assets/Textures/MegaIcon.png
+  Goomba ../../Assets/Textures/GoombaIcon.png
   TexGoombaMove ../../Assets/Animations/GoombaMove.png
   TexRun ../../Assets/Animations/MegaRun.png
   TexIdle ../../Assets/Animations/MegaIdle.png

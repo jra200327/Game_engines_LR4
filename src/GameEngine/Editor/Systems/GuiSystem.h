@@ -10,6 +10,13 @@
 #include "../GameObjectFactory.h"
 #include "../CameraService.h"
 
+#include "../../Ecs/Filter/Filter.h"
+#include "../../Ecs/Filter/FilterBuilder.h"
+struct EnemyPatrolData
+{
+    sf::Vector2i patrolA{0, 0};
+    sf::Vector2i patrolB{0, 0};
+};
 namespace Editor {
 
     class GuiSystem final : public ISystem
@@ -23,6 +30,8 @@ namespace Editor {
 
         // Маппинг: имя текстуры → имя объекта в level.txt
         std::unordered_map<std::string, std::string> _textureToObjectName;
+
+        std::vector<EnemyPatrolData> _enemyPatrols;
 
         void SaveScene();
 

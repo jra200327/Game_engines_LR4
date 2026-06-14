@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "../../../Ecs/Filter/FilterBuilder.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/BBoxComponent.h"
 #include "../Components/EditorComponent.h"
@@ -27,9 +26,7 @@ namespace Editor {
         // Инициализируем маппинг текстур → имена объектов для level.txt
         
         // Игрок
-        _textureToObjectName["TexRun"] = "Player";
-        _textureToObjectName["TexIdle"] = "Player";
-        _textureToObjectName["TexJump"] = "Player";
+        _textureToObjectName["Player"] = "Player";
         
         // Тайлы
         _textureToObjectName["Tile"] = "Tile";
@@ -52,7 +49,7 @@ namespace Editor {
         _textureToObjectName["SmallHill"] = "SmallHill";
         
         // Враги
-        _textureToObjectName["TexGoombaMove"] = "Goomba";
+        _textureToObjectName["Goomba"] = "Goomba";
     }
 
     void GuiSystem::OnInit()
@@ -103,7 +100,7 @@ namespace Editor {
             objectCount++;
         }
         
-        std::string filePath = "D:/work/Game_engines_LR4/src/Configs/level.txt";
+        std::string filePath = "../../Configs/level.txt";
         std::ofstream file(filePath);
         if (!file.is_open())
         {
@@ -118,10 +115,37 @@ namespace Editor {
         
         file.close();
         std::cout << "[Editor] Scene saved to " << filePath << " (" << objectCount << " objects)\n";
+
+        std::string patrolsfilePath = "../../Configs/enemyPatrol.txt";
+        std::ofstream patrolsfile(patrolsfilePath);
+
+        if (!patrolsfile.is_open())
+        {
+            std::cerr << "[Editor] ERROR: cannot open file: " << patrolsfilePath << "\n";
+            return;
+        }
+
+        for (const auto& p : _enemyPatrols)
+        {
+            patrolsfile
+                << p.patrolA.x << " "
+                << p.patrolA.y << " "
+                << p.patrolB.x << " "
+                << p.patrolB.y
+                << "\n";
+        }
+
+        patrolsfile.close();
+
+        std::cout << "[Editor] Patrols saved to " << patrolsfilePath
+                << " (" << _enemyPatrols.size() << " entries)\n";
+                
     }
 
     void GuiSystem::OnUpdate()
-    {
+    {   
+        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(400, 600), ImGuiCond_Always);
         ImGui::Begin("Editor Assets");
 
         if (ImGui::CollapsingHeader("Textures", ImGuiTreeNodeFlags_DefaultOpen))
@@ -149,6 +173,20 @@ namespace Editor {
                         _goFactory->CreateFromTexture(name, viewCenter);
                         std::cout << "[Editor] Created object: " << name << " at (" 
                                   << viewCenter.x << ", " << viewCenter.y << ")\n";
+
+                        if(name == "Goomba")
+                        {
+                            EnemyPatrolData patrol;
+
+                            auto gridPos = sf::Vector2i(
+                                static_cast<int>(viewCenter.x / 64.f),
+                                static_cast<int>(viewCenter.y / 64.f));
+
+                            patrol.patrolA = gridPos;
+                            patrol.patrolB = gridPos;
+
+                            _enemyPatrols.push_back(patrol);
+                        }
                     }
 
                     if (ImGui::IsItemHovered())
@@ -182,6 +220,33 @@ namespace Editor {
         }
 
         ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(420, 10), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_Always);
+        ImGui::Begin("Enemy Patrols");
+        
+            for (size_t i = 0; i < _enemyPatrols.size(); ++i)
+            {
+                auto& patrol = _enemyPatrols[i];
+
+                ImGui::PushID(static_cast<int>(i));
+
+                if (ImGui::TreeNode(
+                    ("Goomba #" + std::to_string(i)).c_str()))
+                {
+                    ImGui::InputInt("A X", &patrol.patrolA.x);
+                    ImGui::InputInt("A Y", &patrol.patrolA.y);
+
+                    ImGui::InputInt("B X", &patrol.patrolB.x);
+                    ImGui::InputInt("B Y", &patrol.patrolB.y);
+
+                    ImGui::TreePop();
+                }
+
+                ImGui::PopID();
+            }
+            ImGui::End();
+        
     }
 
 }
