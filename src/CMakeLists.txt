@@ -1,4 +1,7 @@
 set(TARGET_NAME main)
+
+option(ENABLE_EDITOR "Enable level editor scene" ON)
+
 set(SOURCES main.cpp
         Sample/Systems/MovementSystem.cpp
         Sample/Systems/MovementSystem.h
@@ -70,6 +73,39 @@ set(SOURCES main.cpp
         UI/Button.cpp
 )
 
+if(ENABLE_EDITOR)
+    message(STATUS "Editor scene ENABLED")
+    
+    list(APPEND SOURCES
+        GameEngine/Scenes/EditorScene.h
+        GameEngine/Scenes/EditorScene.cpp
+        
+        GameEngine/Editor/CameraService.h
+        GameEngine/Editor/CameraService.cpp
+        
+        GameEngine/Editor/GameObjectFactory.h
+        GameEngine/Editor/GameObjectFactory.cpp
+
+        GameEngine/Editor/GameObjectController.h
+        GameEngine/Editor/GameObjectController.cpp
+        
+        GameEngine/Editor/Components/EditorComponent.h
+        GameEngine/Editor/Components/TransformComponent.h
+        GameEngine/Editor/Components/BBoxComponent.h
+        
+        GameEngine/Editor/Systems/MouseInputSystem.h
+        GameEngine/Editor/Systems/MouseInputSystem.cpp
+        
+        GameEngine/Editor/Systems/RenderSystem.h
+        GameEngine/Editor/Systems/RenderSystem.cpp
+        
+        GameEngine/Editor/Systems/GuiSystem.h
+        GameEngine/Editor/Systems/GuiSystem.cpp
+    )
+else()
+    message(STATUS "Editor scene DISABLED")
+endif()
+
 add_subdirectory(Ecs)
 
 add_executable(${TARGET_NAME} 
@@ -77,6 +113,10 @@ add_executable(${TARGET_NAME}
 
 #target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 target_compile_features(${TARGET_NAME} PRIVATE cxx_std_20)
+
+if(ENABLE_EDITOR)
+    target_compile_definitions(${TARGET_NAME} PRIVATE ENABLE_EDITOR)
+endif()
 
 target_link_libraries(${TARGET_NAME} PUBLIC easy_ecs)
 target_link_libraries(${TARGET_NAME} PUBLIC ImGui-SFML::ImGui-SFML)
@@ -90,6 +130,10 @@ target_include_directories(${TARGET_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine
     ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Input
     ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Scenes
+    ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Editor
+    ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Editor/Systems
+    ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Editor/Components
+
 
     ${CMAKE_CURRENT_SOURCE_DIR}/UI
 )

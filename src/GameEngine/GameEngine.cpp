@@ -6,10 +6,7 @@
 void GameEngine::Render(float delta)
 {
     _window.clear(sf::Color::Black);
-    ImGui::SFML::Update(
-        _window,
-        sf::seconds(delta));
-
+    
     CurrentScene()->Render();
     ImGui::SFML::Render(_window);
     _window.display();
@@ -47,6 +44,7 @@ void GameEngine::Run()
         auto scene = CurrentScene();
         if (!scene) continue;
         _inputManager->ProcessInput(_currentScene);
+        ImGui::SFML::Update(_window, sf::seconds(delta));
 
         scene->Update(delta);
 

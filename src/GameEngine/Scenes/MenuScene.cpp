@@ -33,7 +33,24 @@ void MenuScene::Init()
         std::cout << "Play button clicked!\n";
 
         gameEngine.LoadScene<GameScene>();
-    }); 
+    });
+    
+    #ifdef ENABLE_EDITOR
+        const uint8_t editorTextColor[3] = {255, 255, 255};
+        const uint8_t editorBgColor[3] = {50, 50, 180};
+
+        _editorButton = std::make_shared<Button>(font, "Editor", 32, playSize, editorTextColor, editorBgColor);
+
+        _editorButton->SetPosition({center.x - playSize.x / 2.f, 420.f});
+
+        _editorButton->SetCallback([this]()
+        {
+            std::cout << "Editor button clicked!\n";
+            gameEngine.LoadScene<EditorScene>();
+        });
+    #else
+        _editorButton = nullptr;
+    #endif
 
 
     const uint8_t exitTextColor[3] = {255, 255, 255};
@@ -41,7 +58,11 @@ void MenuScene::Init()
 
     _exitButton = std::make_shared<Button>(font, "Exit", 32, playSize, exitTextColor, exitBgColor);
 
-    _exitButton->SetPosition({center.x - playSize.x / 2.f, 420.f});
+    #ifdef ENABLE_EDITOR
+        _exitButton->SetPosition({center.x - playSize.x / 2.f, 540.f});
+    #else
+        _exitButton->SetPosition({center.x - playSize.x / 2.f, 420.f});
+    #endif
 
     _exitButton->SetCallback([this]()
     {
@@ -63,6 +84,7 @@ void MenuScene::Update(float delta)
 {
     systemsManager.Update();
     _playButton->Update(_mouseClickAction);
+    _editorButton->Update(_mouseClickAction);
     _exitButton->Update(_mouseClickAction);
 }
 
@@ -80,5 +102,6 @@ void MenuScene::Render()
     _title->Draw(window);
 
     _playButton->Draw(window);
+    _editorButton->Draw(window);
     _exitButton->Draw(window);
 }

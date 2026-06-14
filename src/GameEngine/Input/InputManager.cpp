@@ -135,6 +135,7 @@ bool InputManager::ProcessInput(const size_t scene)
             if (_actionMouseWheelMaps[scene].contains(mouseWheel->wheel))
             {
                 _actionMouseWheelMaps[scene][mouseWheel->wheel]->Value() = static_cast<short>(mouseWheel->delta);
+                _actionMouseWheelMaps[scene][mouseWheel->wheel]->Value2() = sf::Mouse::getPosition(_window);
                 _actionMouseWheelMaps[scene][mouseWheel->wheel]->Type() = ActionType::Start;
             }
         }

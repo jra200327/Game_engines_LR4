@@ -10,6 +10,10 @@
 #include "Scenes/MenuScene.h"
 #include "Scenes/GameScene.h"
 
+#ifdef ENABLE_EDITOR
+#include "Scenes/EditorScene.h"
+#endif
+
 class GameEngine {
     GameEngineConfiguration _config;
 

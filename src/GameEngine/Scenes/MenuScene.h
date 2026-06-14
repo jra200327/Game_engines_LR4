@@ -15,6 +15,7 @@ class MenuScene : public Scene
 {
     std::shared_ptr<Button> _playButton;
     std::shared_ptr<Button> _exitButton;
+    std::shared_ptr<Button> _editorButton;
 
     std::shared_ptr<Text> _title;
     std::shared_ptr<InputAction> _mouseClickAction;

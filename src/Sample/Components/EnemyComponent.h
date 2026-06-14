@@ -22,7 +22,7 @@ struct EnemyComponent
 
     float repathTimer = 0.f;
 
-    float sightRadius = 640;
+    float sightRadius = 256;
     bool seesPlayer = false;
 
     bool isInitiated = false;
