@@ -94,15 +94,14 @@ void EnemyAISystem::Move(sf::Vector2f& pos,
     }
 
     sf::Vector2f target = _grid.GridToWorld(enemy.path.front());
-
     sf::Vector2f diff = target - pos;
-
     sf::Vector2f dir = {0.f, 0.f};
 
-    if (std::abs(diff.x) > std::abs(diff.y))
+    // ТОЛЬКО ГОРИЗОНТАЛЬНОЕ ДВИЖЕНИЕ
+    if (std::abs(diff.x) > 5.f)
+    {
         dir.x = (diff.x > 0.f) ? 1.f : -1.f;
-    else
-        dir.y = (diff.y > 0.f) ? 1.f : -1.f;
+    }
 
     movement.Direction = dir;
 }
@@ -169,6 +168,9 @@ std::vector<sf::Vector2i> EnemyAISystem::FindPath(
         {
             sf::Vector2i next = cur.pos + d;
 
+             if (next != goal && IsBlocked(next))
+            continue;
+
             if (IsBlocked(next))
                 continue;
 
@@ -227,9 +229,29 @@ void EnemyAISystem::OnUpdate()
             dist < enemy.sightRadius &&
             HasLineOfSight(enemyCell, playerCell);
 
+
+            static float debugTimer = 0;
+            debugTimer += dt;
+            if (debugTimer >= 1.0f && !enemy.seesPlayer)
+            {
+                debugTimer = 0;
+                std::cout << "Enemy patrolA: (" << enemy.patrolA.x << "," << enemy.patrolA.y << ")" << std::endl;
+                std::cout << "Enemy patrolB: (" << enemy.patrolB.x << "," << enemy.patrolB.y << ")" << std::endl;
+                std::cout << "Current target: (" << enemy.currentPatrolTarget.x << "," << enemy.currentPatrolTarget.y << ")" << std::endl;
+                std::cout << "Enemy cell: (" << enemyCell.x << "," << enemyCell.y << ")" << std::endl;
+                std::cout << "Distance to target: " << Distance(enemyPos, _grid.GridToWorld(enemy.currentPatrolTarget)) << std::endl;
+                std::cout << "------------------------" << std::endl;
+            }
+
         // ---------------- PATROL ----------------
         if (!enemy.seesPlayer)
         {
+            if (enemy.state == EnemyState::Chase)
+            {
+                enemy.path.clear();
+                enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, true);
+            }
+
             enemy.state = EnemyState::Patrol;
             
             // Получаем мировые координаты цели
@@ -238,7 +260,7 @@ void EnemyAISystem::OnUpdate()
             // Проверяем достижение цели по расстоянию (допуск 10 пикселей)
             float distToTarget = Distance(enemyPos, targetWorldPos);
             
-            if (distToTarget < 40.f) // Достиг цели
+            if (distToTarget < 60.f) // Достиг цели
             {
                 // Меняем цель на другую точку патрулирования
                 enemy.currentPatrolTarget = 
@@ -254,8 +276,22 @@ void EnemyAISystem::OnUpdate()
             }
 
             enemy.path = FindPath(enemyCell, enemy.currentPatrolTarget, true);
+            std::cout << "FindPath returned: " << (enemy.path.empty() ? "EMPTY" : "SIZE " + std::to_string(enemy.path.size())) << std::endl;
             
             Move(enemyPos, movement, enemy, dt);
+
+            if (_jumpComponents.Has(ent) && _gravityComponents.Has(ent))
+            {
+                if (!enemy.path.empty())
+                {
+                    sf::Vector2i nextCell = enemy.path.front();
+
+                    if (nextCell.y < enemyCell.y && grav.grounded)
+                    {
+                        jump.jumpRequested = true;
+                    }
+                }
+            }
         }
         else
         {
