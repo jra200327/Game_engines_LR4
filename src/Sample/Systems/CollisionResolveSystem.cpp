@@ -85,13 +85,17 @@ void CollisionResolveSystem::OnUpdate()
 
                 if (side == CollisionSide::Top)
                 {
+                    auto& jump = _jumpComponents.Get(player);
                     toDestroy.push_back(enemy);
                     auto& pos = _positionComponents.Get(enemy);
                     _factory.CreateEntity(AssetNames::ExplosionAnim, {pos.X, pos.Y});
+                    jump.jumpRequested = true;
                 }
                 else
                 {
-                    _engine.LoadScene<MenuScene>();
+                    auto& playerPos = _positionComponents.Get(player);
+                    playerPos.X = starterPos.x;
+                    playerPos.Y = starterPos.y;
                 }
             }
 

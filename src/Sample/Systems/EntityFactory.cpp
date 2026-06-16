@@ -282,7 +282,7 @@ int EntityFactory::CreateEntity(std::string name, sf::Vector2f pos)
         auto& objectStorage = _world.GetStorage<ObjectComponent>();
         auto& fin = _world.GetStorage<FinishTag>();
 
-        p.Add(e, PositionComponent(pos.x, pos.y));
+        p.Add(e, PositionComponent(pos.x, pos.y+32));
         s.Add(e, SpriteComponent({64, 512}, {0, 0}, _assets.GetTexture(AssetNames::Finish), 0.f, 1.f));
         collisionStorage.Add(e, CollisionComponent());
         boxColliderStorage.Add(e, BoxColliderComponent(64, 512));

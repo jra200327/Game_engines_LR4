@@ -12,6 +12,7 @@
 #include "../Components/PositionComponent.h"
 #include "../Components/GravityComponent.h"
 #include "../Components/MovementComponent.h"
+#include "../Components/JumpComponent.h"
 #include "../Components/ObjectComponent.h"
 #include "../Components/EnemyComponent.h"
 #include "../Components/FinishTag.h"
@@ -30,14 +31,17 @@ class CollisionResolveSystem final : public ISystem {
     ComponentStorage<ObjectComponent>& _objectComponents;
     ComponentStorage<EnemyComponent>& _enemyComponents;
     ComponentStorage<FinishTag>& _finishComponents;
+    ComponentStorage<JumpComponent>& _jumpComponents;
 
     Filter _collideables;
 
     EntityFactory &_factory;
     GameEngine &_engine;
 
+    sf::Vector2f& starterPos;
+
 public:
-    CollisionResolveSystem(World &world, EntityFactory &factory, GameEngine &engine)
+    CollisionResolveSystem(World &world, EntityFactory &factory, GameEngine &engine, sf::Vector2f& startPos)
         : ISystem(world),
             _factory(factory),
             _engine(engine),
@@ -50,7 +54,9 @@ public:
             _movementComponents(world.GetStorage<MovementComponent>()),
             _objectComponents(world.GetStorage<ObjectComponent>()),
             _enemyComponents(world.GetStorage<EnemyComponent>()),
+            _jumpComponents(world.GetStorage<JumpComponent>()),
             _finishComponents(world.GetStorage<FinishTag>()),
+            starterPos(startPos),
             _collideables(FilterBuilder(world)
                 .With<CollisionComponent>()
                 .Build())
